@@ -1,2 +1,4 @@
 *.pyc
 .ipynb_checkpoints
+images
+test_images
