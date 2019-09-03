@@ -10,8 +10,14 @@ def video2im(src='TownCentreXVID.avi', train_path='images', test_path='test_imag
     Extracts all frames from a video and saves them as jpgs
     """
 
-    os.mkdir(train_path)
-    os.mkdir(test_path)
+    try:
+        os.mkdir(train_path)
+        os.mkdir(test_path)
+    except FileExistsError as fee:
+        log.error(f"Error creating output directories - {fee.strerror}: {fee.filename}")
+        log.getLogger(__name__).setLevel(log.INFO)
+        log.info("delete or rename offending directory")
+        return
 
     frame = 0
     cap = cv2.VideoCapture(src)
@@ -58,6 +64,7 @@ def process_video_cmd_args(argv, validator=validate_video_path, processor=video2
         status, msg = validator(path)
         if status:
             processor(src=path)
+            log.info(msg)
         else:
             log.error(msg)
     except IndexError:
