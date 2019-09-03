@@ -1,10 +1,11 @@
 import os
 import cv2
 import numpy as np
+import logging as log
 
 #Dataset from http://www.robots.ox.ac.uk/ActiveVision/Research/Projects/2009bbenfold_headpose/project.html#datasets
 
-def video2im(src, train_path='images', test_path='test_images', factor=2):
+def video2im(src='TownCentreXVID.avi', train_path='images', test_path='test_images', factor=2):
     """
     Extracts all frames from a video and saves them as jpgs
     """
@@ -37,7 +38,7 @@ def video2im(src, train_path='images', test_path='test_images', factor=2):
 
     cap.release()
 
-def validate_video_path(path='TownCentreXVID.avi'):
+def validate_video_path(path):
     """
     returns a tuple. first element of the tuple indicates whether the validation succeeded
     second element is an optional logging message
@@ -47,5 +48,23 @@ def validate_video_path(path='TownCentreXVID.avi'):
     else:
         return (False, f"{path} does not exist")
 
+# validator=validate_video_path, processor=video2i
+def process_video_cmd_args(argv, validator=validate_video_path, processor=video2im):
+    """
+    calls video2im() with validated path or none (default path to be used) when there are no args passed
+    """
+    try:
+        path = argv[1]
+        status, msg = validator(path)
+        if status:
+            processor(src=path)
+        else:
+            log.error(msg)
+    except IndexError:
+        log.warning('Video file path was not passed to script arguements, trying default location, name')
+        processor()
+
+
 if __name__ == '__main__':
-    video2im('TownCentreXVID.avi')
+    import sys
+    process_video_cmd_args(sys.argv, validate_video_path, video2im)
