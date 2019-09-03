@@ -15,9 +15,9 @@ def video2im(src, train_path='images', test_path='test_images', factor=2):
     frame = 0
     cap = cv2.VideoCapture(src)
     length = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-    
+
     print('Total Frame Count:', length )
-    
+
     while True:
         check, img = cap.read()
         if check:
@@ -25,17 +25,27 @@ def video2im(src, train_path='images', test_path='test_images', factor=2):
                 path = train_path
             else:
                 path = test_path
-            
+
             img = cv2.resize(img, (1920 // factor, 1080 // factor))
             cv2.imwrite(os.path.join(path, str(frame) + ".jpg"), img)
 
             frame += 1
             print('Processed: ',frame, end = '\r')
-        
+
         else:
             break
-    
+
     cap.release()
+
+def validate_video_path(path='TownCentreXVID.avi'):
+    """
+    returns a tuple. first element of the tuple indicates whether the validation succeeded
+    second element is an optional logging message
+    """
+    if os.path.exists(path):
+        return (True, f"Processing {path}...")
+    else:
+        return (False, f"{path} does not exist")
 
 if __name__ == '__main__':
     video2im('TownCentreXVID.avi')
