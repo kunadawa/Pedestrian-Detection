@@ -15,7 +15,7 @@ def video2im(src='TownCentreXVID.avi', train_path='images', test_path='test_imag
         os.mkdir(test_path)
     except FileExistsError as fee:
         log.error(f"Error creating output directories - {fee.strerror}: {fee.filename}")
-        log.getLogger(__name__).setLevel(log.INFO)
+        logging.getLogger().setLevel(logging.INFO)
         log.info("delete or rename offending directory")
         return
 
