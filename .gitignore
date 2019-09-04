@@ -6,3 +6,4 @@ test_images
 train.record
 val.record
 object_detection
+train
