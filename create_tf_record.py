@@ -148,6 +148,7 @@ def create_tf_record(output_filename,
   writer.close()
 
 def main(_):
+  logging.getLogger().setLevel(logging.INFO)
   label_map_dict = label_map_util.get_label_map_dict('annotations/label_map.pbtxt')
 
   logging.info('Reading from Pet dataset.')
