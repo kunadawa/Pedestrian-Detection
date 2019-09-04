@@ -5,3 +5,4 @@ test_images
 *.avi
 train.record
 val.record
+object_detection
